@@ -3,7 +3,7 @@ var cx=1000;
 var cy=400;
 var columns =cx/10;
 var rows =cy/10;
-var board, canvas, ctx, i, j;
+var board, canvas, iteration,ctx, i, j;
 
 
 function start() {
@@ -48,7 +48,7 @@ function onCanvasClick(evt) {
             if (living(CoordX, CoordY) ) board[CoordX][CoordY] = 0;
             else board[CoordX][CoordY] = 1;
             fillBoard();
-        }
+}
          
 
 
@@ -56,5 +56,45 @@ function living(x,y) {
             if (board[x] ) 
                 if (board[x][y]==1) return true;
             return false;
+}
+
+function play() {
+    if (!iteration) {
+        iteration = setInterval("repeat()", 300);
+    }
+}
+function repeat() {
+        turn();
+        fillBoard();
+}
+
+function neighborhood(x, y) {
+    var num=0;
+    if (living(x-1, y)) num++; //start to check all neighborhood
+    if (living(x-1, y-1)) num++;
+    if (living(x-1, y+1)) num++;
+    if (living(x, y-1)) num++;
+    if (living(x, y+1)) num++;
+    if (living(x+1, y-1)) num++;
+    if (living(x+1, y+1)) num++;
+    if (living(x+1, y)) num++;
+    return num;
+}
+         
+function turn() {
+    var newBoard = [];
+    for (i= 0; i< columns; i++) {
+        newBoard[i] = [];
+        for (j= 0; j< rows; j++ ) {
+            var neighbor = neighborhood(i, j);
+            //These are the rules
+            if ( living(i,j) && neighbor<2)newBoard[i][j]=0;
+            else if (living(i,j) && neighbor>3 ) newBoard[i][j]=0;
+            else if (living(i,j) && (neighbor==2||neighbor==3))newBoard[i][j]= 1;
+            else if (!living(i,j) && (neighbor== 3) ) newBoard[i][j] = 1;
+            else newBoard[i][j] = 0;
         }
+    }
+    board = newBoard; //change to new generation
+}
          
