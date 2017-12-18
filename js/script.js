@@ -5,6 +5,7 @@ var columns =cx/10;
 var rows =cy/10;
 var board, canvas, ctx, i, j;
 
+
 function start() {
     canvas=document.getElementById("board");
     ctx=canvas.getContext("2d");      
@@ -44,11 +45,16 @@ function onCanvasClick(evt) {
             var y = evt.clientY - canvas.offsetTop;
             var CoordX = parseInt(x/boxsize);
             var CoordY = parseInt(y/boxsize);
+            if (living(CoordX, CoordY) ) board[CoordX][CoordY] = 0;
+            else board[CoordX][CoordY] = 1;
             fillBoard();
- }
+        }
          
 
-  
 
-
-
+function living(x,y) {
+            if (board[x] ) 
+                if (board[x][y]==1) return true;
+            return false;
+        }
+         
