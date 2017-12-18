@@ -4,6 +4,8 @@ var cy=400;
 var columns =cx/10;
 var rows =cy/10;
 var board, canvas, iteration,ctx, i, j;
+var generation = 0;
+//var population = 0;
 
 
 function start() {
@@ -58,14 +60,57 @@ function living(x,y) {
             return false;
 }
 
+
+var resize=function(){
+    cx=0;
+    cy=0;
+    cx=document.getElementById('x').value;
+    cy=document.getElementById('y').value;
+    if(cx>100){
+        alert("Too much rows, the maximum is 100"); cx = 100;
+    }
+    if(cy>40){
+        alert("Too much columns, the maximum is 40"); cy = 40;
+    }
+
+    console.log(cy);
+    document.getElementsByClassName('table')[0].width=(cx*10)+"px";
+    document.getElementsByClassName('table')[0].height=(cy*10)+"px";
+    console.log(document.getElementsByClassName('table')[0].width=(cx*10));
+    console.log(document.getElementsByClassName('table')[0].height=(cy*10));
+    columns=cx*10;
+    rows=cy*10;
+    fillBoard();
+}
+
 function play() {
     if (!iteration) {
         iteration = setInterval("repeat()", 300);
     }
 }
+
 function repeat() {
         turn();
         fillBoard();
+        generation += 1;
+        document.getElementById("gen").innerHTML = "Generation " + String(generation);
+}
+         
+function pause() {
+    clearInterval(iteration);
+    iteration = undefined;
+}
+
+function onestep(){
+    pause();
+    repeat();
+}
+         
+function clean() {
+    pause();
+    start();
+    generation = 0;
+    document.getElementById("gen").innerHTML = "Generation " + String(generation);
 }
 
 function neighborhood(x, y) {
@@ -86,6 +131,8 @@ function turn() {
     for (i= 0; i< columns; i++) {
         newBoard[i] = [];
         for (j= 0; j< rows; j++ ) {
+			//if(board[i][j] == 1)
+        	//	population += 1;
             var neighbor = neighborhood(i, j);
             //These are the rules
             if ( living(i,j) && neighbor<2)newBoard[i][j]=0;
