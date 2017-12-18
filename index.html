@@ -7,7 +7,7 @@
 	<title>Game of Life</title>
 	</head>
 	<header><center><h1>Game of Life</h1></center></header>
-	<body>
+	<body onload="start()"> 
 		<div align='center'>
 			<tr><td align="center">
 				Columns: <input id="x" type="text"> 
@@ -23,6 +23,9 @@
 		<center>
 			<canvas id="board" class="table" width="550" height="200"></canvas>
 		</center>
+
+		<h4 align="center" id="gen">Generation 0</h4>	
 			
 </body>
+<script type="text/javascript" src="js/script.js"></script>	
 </html>
